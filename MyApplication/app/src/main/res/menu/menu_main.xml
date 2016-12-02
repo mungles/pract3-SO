@@ -6,6 +6,7 @@
         android:id="@+id/action_upload"
         android:orderInCategory="100"
         android:title="@string/action_upload"
+        android:icon="@drawable/ic_file_upload_black_24dp"
         app:showAsAction="always" />
 
 </menu>

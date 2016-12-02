@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SO</string>
+    <string name="action_upload">Upload file</string>
+    <string name="menu_nuevo">file</string>
+</resources>

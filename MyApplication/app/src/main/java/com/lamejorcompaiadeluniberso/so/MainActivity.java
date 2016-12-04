@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
             Uri uri = null;
             if (resultData != null) {
                 uri = resultData.getData();
+                Archivo a = new Archivo(getApplicationContext());
+                a.leerArchivo(uri);
             }
         }
     }

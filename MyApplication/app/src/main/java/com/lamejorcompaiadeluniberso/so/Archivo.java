@@ -1,17 +1,26 @@
 package com.lamejorcompaiadeluniberso.so;
 
+import android.content.Context;
+import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 /**
  * Created by axel on 01/12/2016.
  */
 public class Archivo {
+    Context ctx;
+
+    public Archivo(Context ctx) {
+        this.ctx = ctx;
+    }
 
     public boolean ComprobarSD(){
         boolean sdDisponible = false;
@@ -36,22 +45,23 @@ public class Archivo {
         return sdDisponible;
     }
 
-    public void leerArchivo(String nombre){
+    public ArrayList<String> leerArchivo(Uri uri){
         try {
-            File ruta_sd = Environment.getExternalStorageDirectory();
+            InputStream fin = ctx.getContentResolver().openInputStream(uri);
 
-            File f = new File(ruta_sd.getAbsolutePath(), "prueba_sd.txt");
+            BufferedReader r = new BufferedReader(new InputStreamReader(fin));
+            ArrayList<String> lines = new ArrayList<>();
+            String line;
+            while ((line = r.readLine()) != null) {
+                lines.add(line);
+                Log.w("P3SO", line);
+            }
 
-            BufferedReader fin =
-                    new BufferedReader(
-                            new InputStreamReader(
-                                    new FileInputStream(f)));
-
-            String texto = fin.readLine();
-            fin.close();
+            return lines;
         }
         catch (Exception ex) {
             Log.e("Ficheros", "Error al leer fichero desde tarjeta SD");
+            return null;
         }
     }
 

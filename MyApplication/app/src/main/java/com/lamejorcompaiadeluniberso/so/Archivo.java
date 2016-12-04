@@ -52,6 +52,7 @@ public class Archivo {
             BufferedReader r = new BufferedReader(new InputStreamReader(fin));
             ArrayList<String> lines = new ArrayList<>();
             String line;
+            String aux;
             while ((line = r.readLine()) != null) {
                 lines.add(line);
                 Log.w("P3SO", line);

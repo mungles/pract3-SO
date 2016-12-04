@@ -76,17 +76,18 @@ public class MainActivity extends AppCompatActivity {
                 Archivo a = new Archivo(getApplicationContext());
                 lineas=a.leerArchivo(uri);
                 Toast.makeText(this,"Se han cargado: " + (lineas.size()-1)+" procesos",Toast.LENGTH_LONG).show();
-                crearProceso(lineas);
+                List<Proceso> procesos = crearProceso(lineas);
                 String[] datos = lineas.toArray(new String[lineas.size()-1]);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,datos);
                 lista.setAdapter(adapter);
 
-
+                GestorMemoria gm = new GestorMemoria(procesos);
+                
             }
         }
     }
 
-    private void crearProceso(List<String> s){
+    private List<Proceso> crearProceso(List<String> s){
         List<String> linea;
         List<Proceso> procesos = new ArrayList<Proceso>();
         linea = s;
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             Log.w("P3SO",procesos.get(i).toString());
         }*/
 
-
+        return procesos;
 
     }
 

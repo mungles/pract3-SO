@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 lista.setAdapter(adapter);
 
                 GestorMemoria gm = new GestorMemoria(procesos);
-                
+                gm.procesarComoSiguienteHueco();
             }
         }
     }
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         linea = s;
 
 
-        for(int i=1;i<linea.size();i++){
+        for(int i=0;i<linea.size();i++){
             String[] parts = linea.get(i).split(" ");
             Proceso p = new Proceso(parts[0],Integer.parseInt(parts[1]),Integer.parseInt(parts[2]),Integer.parseInt(parts[3]));
             procesos.add(p);

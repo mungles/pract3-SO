@@ -9,22 +9,30 @@ public class Particion {
     private int tamaño;
     private String estado;
     private boolean libre;
+    private int ttl;
 
-    public Particion(int inicio, int tamaño, String estado, boolean libre) {
+    public Particion(int inicio, int tamaño, String estado, boolean libre, int ttl) {
         this.inicio = inicio;
         this.tamaño = tamaño;
         this.estado = estado;
         this.libre = libre;
+        this.ttl = ttl;
     }
 
     public int getInicio() { return inicio; }
     public int getTamaño() { return tamaño; }
     public String getEstado() { return estado; }
     public boolean isLibre() { return libre; }
+    public int getTtl() { return ttl; }
 
     public void setInicio(int inicio) { this.inicio = inicio; }
     public void setTamaño(int tamaño) { this.tamaño = tamaño; }
     public void setEstado(String estado) { this.estado = estado; }
     public void reservar() { this.libre = false; }
     public void liberar() { this.libre = true; }
+
+    @Override
+    public String toString() {
+        return "[" + this.inicio + " " + this.estado + " " + this.tamaño + "]";
+    }
 }

@@ -52,10 +52,8 @@ public class GestorMemoria {
 
             // Controlar ciclo de vida de los procesos que están ya asignados
             for (int j = 0; j < particiones.size(); j++) {
-                Log.w("P3SO", "Inspecting partition " + j + ": " + particiones.get(j).toString());
                 Particion pa = particiones.get(j);
                 if (!pa.isLibre()) {
-                    Log.w("P3SO", pa.getTtl() + " - " + instantes.get(i));
                     if (pa.getTtl() - instantes.get(i) <= 0) {
                         Log.w("P3SO", "Proceso " + pa.getEstado() + " muere.");
                         // El proceso ha muerto en este instante
@@ -123,12 +121,6 @@ public class GestorMemoria {
             History.addMoment(instantes.get(i), particiones);
         }
 
-        List<History.Item> items = History.getMoments();
-        for (int i = 0; i < items.size(); i++) {
-            Log.w("P3SO", "Moment " + items.get(i).getInstante() + " has:");
-            for (int j = 0; j < items.get(i).getParticiones().size(); j++) {
-                Log.w("P3SO", items.get(i).getParticiones().get(j).toString());
-            }
-        }
+        Log.w("P3SO", History.getPrintableString());
     }
 }

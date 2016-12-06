@@ -50,6 +50,20 @@ public class History {
         if (i != null) { return i.getParticiones(); } else { return null; }
     }
 
+    public static String getPrintableString() {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < history.size(); i++) {
+            sb.append(history.get(i).getInstante() + " ");
+            for (int j = 0; j < history.get(i).getParticiones().size(); j++) {
+                sb.append(history.get(i).getParticiones().get(j).toString());
+            }
+            sb.append("\n");
+        }
+
+        return sb.toString();
+    }
+
     public static class Item {
         private int instante;
         private List<Particion> particiones;

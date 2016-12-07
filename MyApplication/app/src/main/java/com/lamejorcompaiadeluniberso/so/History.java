@@ -26,11 +26,22 @@ public class History {
 
     public static void addMoment(int moment, List<Particion> particiones) {
         if (historyMap.get(moment) == null) {
-            history.add(new Item(moment, particiones));
-            historyMap.put(moment, history.size() - 1);
+            copy(moment, particiones);
         } else {
             history.get(historyMap.get(moment)).updateParticiones(particiones);
         }
+    }
+
+    private static void copy(int moment, List<Particion> particiones) {
+        List<Particion> listcopy = new ArrayList<>();
+
+        for (int i = 0; i < particiones.size(); i++) {
+            Particion pa = particiones.get(i);
+            listcopy.add(new Particion(pa.getInicio(), pa.getTamaño(), pa.getEstado(), pa.isLibre(), pa.getTtl()));
+        }
+
+        history.add(new Item(moment, listcopy));
+        historyMap.put(moment, history.size() - 1);
     }
 
     public static List<Item> getMoments() {

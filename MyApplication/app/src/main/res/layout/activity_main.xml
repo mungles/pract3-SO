@@ -44,4 +44,12 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_play_arrow_black_24dp" />
+
+    <pl.droidsonroids.gif.GifImageView
+        android:visibility="gone"
+        android:id="@+id/gif2"
+        android:background="@drawable/rainbow_gif1"
+        android:layout_gravity="end"
+        android:layout_width="50dp"
+        android:layout_height="match_parent" />
 </android.support.design.widget.CoordinatorLayout>

@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pl.droidsonroids.gif.GifImageView;
+
 import static android.R.attr.button;
 
 public class MainActivity extends AppCompatActivity {
@@ -91,7 +93,11 @@ public class MainActivity extends AppCompatActivity {
                 procesos = crearProceso(lineas);
                 String[] datos = lineas.toArray(new String[lineas.size()-1]);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,datos);
-                lista.setAdapter(adapter);
+
+                //lista.setAdapter(adapter);
+                lista.setDivider(null);
+                lista.setDividerHeight(0);
+                lista.setAdapter(new ProcesosAdapter(getApplicationContext(), procesos));
 
                 new android.os.Handler().postDelayed(new Runnable() {
                     @Override
@@ -113,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){
         super.onCreateContextMenu(menu,v,menuInfo);
-        menu.setHeaderTitle("Seleccione algoritmo: ");
+        menu.setHeaderTitle("Seleccione algoritmo");
         MenuInflater inflater=getMenuInflater();
         inflater.inflate(R.menu.opciones,menu);
     }
@@ -148,10 +154,13 @@ public class MainActivity extends AppCompatActivity {
         linea = s;
 
 
-        for(int i=1;i<linea.size();i++){
+        for(int i=0;i<linea.size();i++){
             String[] parts = linea.get(i).split(" ");
             Proceso p = new Proceso(parts[0],Integer.parseInt(parts[1]),Integer.parseInt(parts[2]),Integer.parseInt(parts[3]));
             procesos.add(p);
+            if (parts[0].toLowerCase().equals("arcoiris")) {
+                FantasticRainbowFun();
+            }
         }
 
         /*for(int i=0;i<procesos.size();i++){
@@ -169,5 +178,25 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, ELEGIR_ARCHIVO_REQUEST_CODE);
     }
 
+    private void FantasticRainbowFun() {
+        GifImageView gv = (GifImageView) findViewById(R.id.gif);
+        gv.setVisibility(View.VISIBLE);
 
+        GifImageView gv2 = (GifImageView) findViewById(R.id.gif2);
+        gv2.setVisibility(View.VISIBLE);
+
+        superloop();
+    }
+
+    private void superloop() {
+        int color = ColorGenerator.generateColor();
+        (findViewById(R.id.toolbar)).setBackgroundColor(color);
+
+        new android.os.Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                superloop();
+            }
+        }, 100);
+    }
 }

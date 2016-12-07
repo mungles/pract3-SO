@@ -123,4 +123,85 @@ public class GestorMemoria {
 
         Log.w("P3SO", History.getPrintableString());
     }
+
+    public void procesarComoPeorHueco(){
+        int hueco = 0;
+        int tam_part=0;
+        int inicio_hueco=0;
+        List<Integer> instantes = new ArrayList<>();
+        List<Proceso> cola = new ArrayList<>();
+
+        Particion best_part = new Particion(0, 0, "Libre", true, 0);
+
+
+        for (int i = 0; i < procesos.size(); i++) {
+            if (!instantes.contains(procesos.get(i).getLlegada())) {
+                instantes.add(procesos.get(i).getLlegada());
+            }
+        }
+        Log.w("P3SO", instantes.size() + " instantes.");
+
+        for(int i=0;i<instantes.size();i++) {
+            List<Proceso> proc = getProcesosEnInstante(instantes.get(i));
+            Log.w("P3SO", proc.size() + " procesos en " + instantes.get(i));
+            //comprobar tiempo de vida
+            for (int j = 0; j < particiones.size(); j++) {
+                Log.w("P3SO", "Inspecting partition " + j + ": " + particiones.get(j).toString());
+                Particion pa = particiones.get(j);
+                if (!pa.isLibre()) {
+                    Log.w("P3SO", pa.getTtl() + " - " + instantes.get(i));
+                    if (pa.getTtl() - instantes.get(i) <= 0) {
+                        Log.w("P3SO", "Proceso " + pa.getEstado() + " muere.");
+                        pa.liberar();
+                    }
+                }
+            }
+            //seleccionar hueco
+            for(int j=0;i<particiones.size();i++){
+                if(particiones.get(j).isLibre()){
+                    if(particiones.get(j).getTamaño()>best_part.getTamaño()){
+                        best_part=particiones.get(j);
+                    }
+                }
+            }
+
+            for (int j = 0; j < proc.size(); j++) {
+                Proceso p = proc.get(j);
+                Log.w("P3SO", p.toString());
+                boolean allocated = false;
+
+                if (hueco >= particiones.size()) { hueco = 0; }
+
+                for (int k = 0; !allocated && k < particiones.size(); k++) {
+
+                    if(particiones.get(k).equals(best_part)){
+                        Particion pa = particiones.get(k);
+                        if (pa.isLibre() && p.getMemoria() == pa.getTamaño()) {
+                            int nuevotamaño =p.getMemoria();
+                            int inicio = pa.getInicio();
+                            particiones.get(k).setTamaño(nuevotamaño);
+                            particiones.get(k).setInicio(pa.getInicio() + p.getMemoria());
+                            particiones.add(k, new Particion(inicio, p.getMemoria(), p.getNombre(), false, p.getTiempo() + instantes.get(i)));
+                            allocated = true;
+                            Log.w("P3SO", "Allocated " + p.getNombre() + " in partition " + pa.toString() + "("+k+")");
+                        }
+                        else if(pa.isLibre() && p.getMemoria()< pa.getTamaño()){
+                            int nuevotamaño =p.getMemoria()-p.getMemoria();
+                            int inicio = p.getMemoria();
+                            particiones.get(k).setTamaño(nuevotamaño);
+                            particiones.get(k).setInicio(pa.getInicio() + p.getMemoria());
+                            particiones.add(k, new Particion(inicio, p.getMemoria(), p.getNombre(), false, p.getTiempo() + instantes.get(i)));
+                            allocated = true;
+                            Log.w("P3SO", "Allocated " + p.getNombre() + " in partition " + pa.toString() + "("+k+")");
+                        }
+                    }
+                }
+                if (!allocated) { cola.add(p); }
+            }
+            Log.w("P3SO", "Instante " + instantes.get(i) + " acaba con " + cola.size() + " procesos en cola.");
+            History.addMoment(instantes.get(i), particiones);
+        }
+        Log.w("P3SO", History.getPrintableString());
+
+    }
 }

@@ -10,6 +10,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,9 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import static android.R.attr.button;
+
 public class MainActivity extends AppCompatActivity {
     final int ELEGIR_ARCHIVO_REQUEST_CODE = 42;
     ListView lista;
+    List<Proceso> procesos = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Gestión de memoria");
+
 
         lista = (ListView)findViewById(R.id.list_view);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -82,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 Archivo a = new Archivo(getApplicationContext());
                 lineas=a.leerArchivo(uri);
                 Toast.makeText(this,"Se han cargado: " + (lineas.size()-1)+" procesos",Toast.LENGTH_LONG).show();
-                final List<Proceso> procesos = crearProceso(lineas);
+                procesos = crearProceso(lineas);
                 String[] datos = lineas.toArray(new String[lineas.size()-1]);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,datos);
                 lista.setAdapter(adapter);
@@ -96,8 +102,7 @@ public class MainActivity extends AppCompatActivity {
                         fab.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                GestorMemoria gm = new GestorMemoria(procesos);
-                                gm.procesarComoSiguienteHueco();
+                                lanzarMenu(view);
                             }
                         });
                     }
@@ -106,13 +111,44 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){
+        super.onCreateContextMenu(menu,v,menuInfo);
+        menu.setHeaderTitle("Seleccione algoritmo: ");
+        MenuInflater inflater=getMenuInflater();
+        inflater.inflate(R.menu.opciones,menu);
+    }
+
+    public boolean onContextItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.siguiente_hueco:
+                GestorMemoria gm = new GestorMemoria(procesos);
+                gm.procesarComoSiguienteHueco();
+                item.setChecked(true);
+                Toast.makeText(this,"Algoritmo elegido: Siguiente hueco",Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.peor_hueco:
+                GestorMemoria GM = new GestorMemoria(procesos);
+                GM.procesarComoPeorHueco();
+                item.setChecked(true);
+                Toast.makeText(this,"Algoritmo elegido: Peor hueco",Toast.LENGTH_LONG).show();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    public void lanzarMenu(View v){
+        registerForContextMenu(v);
+        openContextMenu(v);
+    }
+
     private List<Proceso> crearProceso(List<String> s){
         List<String> linea;
         List<Proceso> procesos = new ArrayList<Proceso>();
         linea = s;
 
 
-        for(int i=0;i<linea.size();i++){
+        for(int i=1;i<linea.size();i++){
             String[] parts = linea.get(i).split(" ");
             Proceso p = new Proceso(parts[0],Integer.parseInt(parts[1]),Integer.parseInt(parts[2]),Integer.parseInt(parts[3]));
             procesos.add(p);
@@ -130,7 +166,8 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
-
         startActivityForResult(intent, ELEGIR_ARCHIVO_REQUEST_CODE);
     }
+
+
 }

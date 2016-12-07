@@ -26,11 +26,22 @@ public class History {
 
     public static void addMoment(int moment, List<Particion> particiones) {
         if (historyMap.get(moment) == null) {
-            history.add(new Item(moment, particiones));
-            historyMap.put(moment, history.size() - 1);
+            copy(moment, particiones);
         } else {
             history.get(historyMap.get(moment)).updateParticiones(particiones);
         }
+    }
+
+    private static void copy(int moment, List<Particion> particiones) {
+        List<Particion> listcopy = new ArrayList<>();
+
+        for (int i = 0; i < particiones.size(); i++) {
+            Particion pa = particiones.get(i);
+            listcopy.add(new Particion(pa.getInicio(), pa.getTamaño(), pa.getEstado(), pa.isLibre(), pa.getTtl()));
+        }
+
+        history.add(new Item(moment, listcopy));
+        historyMap.put(moment, history.size() - 1);
     }
 
     public static List<Item> getMoments() {
@@ -48,6 +59,20 @@ public class History {
     public static List<Particion> getParticionesInMoment(int moment) {
         History.Item i = getMoment(moment);
         if (i != null) { return i.getParticiones(); } else { return null; }
+    }
+
+    public static String getPrintableString() {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < history.size(); i++) {
+            sb.append(history.get(i).getInstante() + " ");
+            for (int j = 0; j < history.get(i).getParticiones().size(); j++) {
+                sb.append(history.get(i).getParticiones().get(j).toString());
+            }
+            sb.append("\n");
+        }
+
+        return sb.toString();
     }
 
     public static class Item {

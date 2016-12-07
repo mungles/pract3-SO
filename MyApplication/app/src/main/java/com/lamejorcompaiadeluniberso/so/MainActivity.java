@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Gestión de memoria");
+
         lista = (ListView)findViewById(R.id.list_view);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -73,16 +76,32 @@ public class MainActivity extends AppCompatActivity {
             Uri uri = null;
             if (resultData != null) {
                 uri = resultData.getData();
+                String uri_s = uri.toString() + "";
+                getSupportActionBar().setSubtitle(uri_s.split("%3A")[1]);
+
                 Archivo a = new Archivo(getApplicationContext());
                 lineas=a.leerArchivo(uri);
                 Toast.makeText(this,"Se han cargado: " + (lineas.size()-1)+" procesos",Toast.LENGTH_LONG).show();
-                List<Proceso> procesos = crearProceso(lineas);
+                final List<Proceso> procesos = crearProceso(lineas);
                 String[] datos = lineas.toArray(new String[lineas.size()-1]);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,datos);
                 lista.setAdapter(adapter);
 
-                GestorMemoria gm = new GestorMemoria(procesos);
-                gm.procesarComoSiguienteHueco();
+                new android.os.Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+                        fab.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open));
+                        fab.setVisibility(View.VISIBLE);
+                        fab.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                GestorMemoria gm = new GestorMemoria(procesos);
+                                gm.procesarComoSiguienteHueco();
+                            }
+                        });
+                    }
+                }, 300);
             }
         }
     }

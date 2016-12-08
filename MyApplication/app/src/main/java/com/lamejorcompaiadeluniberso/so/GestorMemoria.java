@@ -201,7 +201,7 @@ public class GestorMemoria {
             Log.w("P3SO", "Instante " + instantes.get(i) + " acaba con " + cola.size() + " procesos en cola.");
             History.addMoment(instantes.get(i), particiones);
         }
-        Log.w("P3SO", History.getPrintableString());
 
+        Log.w("P3SO", History.getPrintableString());
     }
 }

@@ -93,7 +93,14 @@ public class History {
         }
 
         public void updateParticiones(List<Particion> particiones) {
-            this.particiones = particiones;
+            List<Particion> listcopy = new ArrayList<>();
+
+            for (int i = 0; i < particiones.size(); i++) {
+                Particion pa = particiones.get(i);
+                listcopy.add(new Particion(pa.getInicio(), pa.getTamaño(), pa.getEstado(), pa.isLibre(), pa.getTtl()));
+            }
+
+            this.particiones = listcopy;
         }
 
         public String toString() {

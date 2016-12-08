@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 <group android:checkableBehavior="single">
     <item android:id="@+id/peor_hueco" android:title="Gestionar por peor hueco"></item>
-    <item android:id="@+id/siguiente_hueco" android:title="gestionar por siguiente hueco"></item>
+    <item android:id="@+id/siguiente_hueco" android:title="Gestionar por siguiente hueco"></item>
 </group>
 </menu>

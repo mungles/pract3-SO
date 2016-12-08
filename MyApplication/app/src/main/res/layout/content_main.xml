@@ -20,4 +20,14 @@
             android:layout_height="match_parent"
             android:id="@+id/list_view" />
     </LinearLayout>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:visibility="gone"
+        android:id="@+id/gif"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/glitter"
+        />
 </RelativeLayout>

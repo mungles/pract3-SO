@@ -27,6 +27,7 @@ import java.util.StringTokenizer;
 import pl.droidsonroids.gif.GifImageView;
 
 import static android.R.attr.button;
+import static android.view.View.GONE;
 
 public class MainActivity extends AppCompatActivity {
     final int ELEGIR_ARCHIVO_REQUEST_CODE = 42;
@@ -85,11 +86,12 @@ public class MainActivity extends AppCompatActivity {
             if (resultData != null) {
                 uri = resultData.getData();
                 String uri_s = uri.toString() + "";
-                getSupportActionBar().setSubtitle(uri_s.split("%3A")[1]);
+                String uri_p[] = uri_s.split("%3A");
+                getSupportActionBar().setSubtitle(uri_p[uri_p.length-1]);
 
                 Archivo a = new Archivo(getApplicationContext());
                 lineas=a.leerArchivo(uri);
-                Toast.makeText(this,"Se han cargado: " + (lineas.size()-1)+" procesos",Toast.LENGTH_LONG).show();
+                Toast.makeText(this,"Se han cargado: " + (lineas.size()) +" procesos",Toast.LENGTH_LONG).show();
                 procesos = crearProceso(lineas);
                 String[] datos = lineas.toArray(new String[lineas.size()-1]);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,datos);
@@ -176,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
         startActivityForResult(intent, ELEGIR_ARCHIVO_REQUEST_CODE);
+        findViewById(R.id.introlayout).setVisibility(View.GONE);
     }
 
     private void FantasticRainbowFun() {

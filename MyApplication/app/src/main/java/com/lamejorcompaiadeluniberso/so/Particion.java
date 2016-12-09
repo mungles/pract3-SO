@@ -19,6 +19,14 @@ public class Particion {
         this.ttl = ttl;
     }
 
+    public Particion(Particion p) {
+        this.inicio = p.getInicio();
+        this.tamaño = p.getTamaño();
+        this.estado = p.getEstado();
+        this.libre = p.isLibre();
+        this.ttl = p.getTtl();
+    }
+
     public int getInicio() { return inicio; }
     public int getTamaño() { return tamaño; }
     public String getEstado() { return estado; }

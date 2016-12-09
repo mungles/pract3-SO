@@ -37,7 +37,7 @@ public class History {
 
         for (int i = 0; i < particiones.size(); i++) {
             Particion pa = particiones.get(i);
-            listcopy.add(new Particion(pa.getInicio(), pa.getTamaño(), pa.getEstado(), pa.isLibre(), pa.getTtl()));
+            listcopy.add(new Particion(pa));
         }
 
         history.add(new Item(moment, listcopy));
@@ -97,7 +97,7 @@ public class History {
 
             for (int i = 0; i < particiones.size(); i++) {
                 Particion pa = particiones.get(i);
-                listcopy.add(new Particion(pa.getInicio(), pa.getTamaño(), pa.getEstado(), pa.isLibre(), pa.getTtl()));
+                listcopy.add(new Particion(pa));
             }
 
             this.particiones = listcopy;

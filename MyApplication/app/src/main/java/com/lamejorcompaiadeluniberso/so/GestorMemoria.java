@@ -17,7 +17,13 @@ public class GestorMemoria {
 
     public GestorMemoria(List<Proceso> procesos) {
         particiones.add(new Particion(0, MAX_MEM, "Libre", true, 0));
-        this.procesos = procesos;
+
+        List<Proceso> procesos_copy = new ArrayList<>();
+        for (int i = 0; i < procesos.size(); i++) {
+            procesos_copy.add(new Proceso(procesos.get(i)));
+        }
+
+        this.procesos = procesos_copy;
     }
 
     public List<Proceso> getProcesosEnInstante(int instante) {
@@ -95,6 +101,12 @@ public class GestorMemoria {
                 }
             }
 
+            // Incorporamos los procesos en cola al principio de la lista de procesos
+            for (int j = 0; j < cola.size(); j++) {
+                proc.add(j, cola.get(j));
+                cola.remove(j);
+            }
+
             // Asignar espacios a procesos
             for (int j = 0; j < proc.size(); j++) {
                 Proceso p = proc.get(j);
@@ -159,6 +171,7 @@ public class GestorMemoria {
                     }
                 }
             }
+
             //seleccionar hueco
             for(int j=0;i<particiones.size();i++){
                 if(particiones.get(j).isLibre()){

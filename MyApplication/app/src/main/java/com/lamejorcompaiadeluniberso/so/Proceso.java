@@ -17,6 +17,13 @@ public class Proceso {
         this.tiempo = tiempo;
     }
 
+    public Proceso(Proceso p) {
+        this.nombre = p.getNombre();
+        this.llegada = p.getLlegada();
+        this.memoria = p.getMemoria();
+        this.tiempo = p.getTiempo();
+    }
+
     public String getNombre(){
         return this.nombre;
     }

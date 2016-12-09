@@ -2,12 +2,7 @@
     <string name="app_name">Gestión de Memoria</string>
     <string name="action_upload">Upload file</string>
     <string name="menu_nuevo">file</string>
-<<<<<<< HEAD
     <string name="peor_hueco">Gestionar por peor hueco</string>
     <string name="siguiente_hueco">Gestionar por siguiente hueco</string>
-=======
-    <string name="peor_hueco">Gestionar por peor hueco: </string>
-    <string name="siguiente_hueco">Gestionar por siguiente hueco: </string>
->>>>>>> 684b039ec42440145e66e6de32c1c9d2b9622af8
     <string name="intro">Selecciona un archivo para comenzar</string>
 </resources>

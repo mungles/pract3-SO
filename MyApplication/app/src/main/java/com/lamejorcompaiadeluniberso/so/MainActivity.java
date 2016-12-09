@@ -91,11 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Archivo a = new Archivo(getApplicationContext());
                 lineas=a.leerArchivo(uri);
-<<<<<<< HEAD
                 Toast.makeText(this,"Se han cargado: " + (lineas.size()-1) +" procesos",Toast.LENGTH_LONG).show();
-=======
-                Toast.makeText(this,"Se han cargado: " + (lineas.size()) +" procesos",Toast.LENGTH_LONG).show();
->>>>>>> 684b039ec42440145e66e6de32c1c9d2b9622af8
                 procesos = crearProceso(lineas);
                 String[] datos = lineas.toArray(new String[lineas.size()-1]);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,datos);

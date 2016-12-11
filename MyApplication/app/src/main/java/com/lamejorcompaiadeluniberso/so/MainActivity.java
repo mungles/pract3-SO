@@ -1,8 +1,8 @@
 package com.lamejorcompaiadeluniberso.so;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -156,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
         linea = s;
 
 
-        for(int i=1;i<linea.size();i++){
+        for(int i=0;i<linea.size();i++){
             String[] parts = linea.get(i).split(" ");
             Proceso p = new Proceso(parts[0],Integer.parseInt(parts[1]),Integer.parseInt(parts[2]),Integer.parseInt(parts[3]));
             procesos.add(p);
@@ -189,6 +190,9 @@ public class MainActivity extends AppCompatActivity {
         gv2.setVisibility(View.VISIBLE);
 
         superloop();
+
+        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.taste);
+        mp.start();
     }
 
     private void superloop() {

@@ -1,5 +1,8 @@
 package com.lamejorcompaiadeluniberso.so;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +51,7 @@ public class History {
         return history;
     }
 
+    @Nullable
     public static Item getMoment(int moment) {
         if (historyMap.get(moment) != null) {
             return history.get(historyMap.get(moment));
@@ -56,11 +60,13 @@ public class History {
         }
     }
 
+    @Nullable
     public static List<Particion> getParticionesInMoment(int moment) {
         History.Item i = getMoment(moment);
         if (i != null) { return i.getParticiones(); } else { return null; }
     }
 
+    @NonNull
     public static String getPrintableString() {
         StringBuilder sb = new StringBuilder();
 

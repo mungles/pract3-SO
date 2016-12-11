@@ -5,10 +5,10 @@ package com.lamejorcompaiadeluniberso.so;
  */
 
 public class Proceso {
-    String nombre;
-    int llegada;
-    int memoria;
-    int tiempo;
+    private String nombre;
+    private int llegada;
+    private int memoria;
+    private int tiempo;
 
     public Proceso(String nombre, int llegada, int memoria, int tiempo) {
         this.nombre = nombre;

@@ -136,6 +136,52 @@ public class GestorMemoria {
             History.addMoment(current_moment, particiones);
         }
 
+        // Juntamos las particiones libres seguidas que puedan haber quedado
+        List<Integer> toremove = new ArrayList<>();
+        for (int j = 0; j < particiones.size(); j++) {
+            Particion pa = particiones.get(j);
+            if (pa.isLibre()) {
+                int attatch = -1;
+                if ((j - 1) >= 0) {
+                    Particion pa_izq = particiones.get(j - 1);
+                    attatch = pa_izq.isLibre() ? 1 : -1;
+                } else if (j + 1 < particiones.size()) {
+                    Particion pa_der = particiones.get(j + 1);
+                    attatch = pa_der.isLibre() ? 0 : -1;
+                }
+
+                switch (attatch) {
+                    case 0:
+                        // Juntar con la particion a la derecha
+                        Particion pad = particiones.get(j + 1);
+                        particiones.get(j).setEstado("Libre");
+                        particiones.get(j).setTamaño(pa.getTamaño() + pad.getTamaño());
+                        toremove.add(j+1);
+                        particiones.get(j).liberar();
+                        break;
+                    case 1:
+                        // Juntar con la particion a la izquierda
+                        particiones.get(j - 1).setEstado("Libre");
+                        particiones.get(j - 1).setTamaño(pa.getTamaño() + pa.getTamaño());
+                        toremove.add(j);
+                        particiones.get(j - 1).liberar();
+                        break;
+                    case -1:
+                        // Liberar directamente
+                        particiones.get(j).setEstado("Libre");
+                        particiones.get(j).liberar();
+                        break;
+                }
+            }
+        }
+
+        for (int j = 0; j < toremove.size(); j++) {
+            Log.w("P3SO", toremove.get(j) + " to remove");
+            particiones.remove(toremove.get(j));
+        }
+
+        History.addMoment(instantes.get(instantes.size()-1), particiones);
+
         Log.w("P3SO", History.getPrintableString());
     }
 

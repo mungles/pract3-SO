@@ -1,19 +1,33 @@
 package com.lamejorcompaiadeluniberso.so;
 
 import android.graphics.Color;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.GridLayout;
+import android.widget.LinearLayout;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,25 +51,26 @@ public class GraphicsActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("Peor hueco");
         }
 
-            BarChart chart = (BarChart) findViewById(R.id.chart);
-            List<History.Item> items = History.getMoments();
-            List<BarEntry> entries = new ArrayList<BarEntry>();
+        List<History.Item> items = History.getMoments();
+        List<PieDataSet> dataSets = new ArrayList<>();
 
-            for (int i = 0; i < items.size(); i++) {
-                entries.add(new BarEntry(items.get(i).getInstante(), items.get(i).getParticiones().get(0).getTamaño()));
+        for (int i = 0; i < items.size(); i++) {
+            List<PieEntry> entries = new ArrayList<>();
+
+            for (int j = 0; j < items.get(i).getParticiones().size(); j++) {
+                Particion pa = items.get(i).getParticiones().get(j);
+                entries.add(new PieEntry(pa.getTamaño(), pa.getEstado()));
             }
 
-            BarDataSet dataSet = new BarDataSet(entries, "Label"); // add entries to dataset
-            dataSet.setColor(ColorGenerator.generateColor());
+            PieDataSet dataSet = new ColoredPieDataSet(entries, "");
+            dataSets.add(dataSet);
+        }
 
-            BarData lineData = new BarData(dataSet);
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTextSize(10f);
-        xAxis.setTextColor(Color.RED);
-        xAxis.setDrawAxisLine(true);
-        xAxis.setDrawGridLines(false);
-            chart.setData(lineData);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setAdapter(new ViewPagerAdapter(this, dataSets, History.getInstantes()));
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
@@ -68,5 +83,17 @@ public class GraphicsActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public class ColoredPieDataSet extends PieDataSet {
+        public ColoredPieDataSet(List<PieEntry> yVals, String label) {
+            super(yVals, label);
+        }
+
+        @Override
+        public int getColor(int index) {
+            return ColorGenerator.getColor(index);
+        }
     }
 }

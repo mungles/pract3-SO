@@ -130,15 +130,28 @@ public class MainActivity extends AppCompatActivity {
     public boolean onContextItemSelected(MenuItem item){
         switch (item.getItemId()){
             case R.id.siguiente_hueco:
-                GestorMemoria gm = new GestorMemoria(procesos);
-                gm.procesarComoSiguienteHueco();
                 item.setChecked(true);
                 Toast.makeText(this,"Algoritmo elegido: Siguiente hueco",Toast.LENGTH_LONG).show();
+
+                Intent i = new Intent(MainActivity.this, GraphicsActivity.class);
+                i.putExtra("algoritmo", 0);
+
+                GestorMemoria gm = new GestorMemoria(procesos);
+                gm.procesarComoSiguienteHueco();
+
+                startActivity(i);
+
                 return true;
             case R.id.peor_hueco:
                 GestorMemoria GM = new GestorMemoria(procesos);
                 GM.procesarComoPeorHueco();
                 item.setChecked(true);
+
+                Intent in = new Intent(MainActivity.this, GraphicsActivity.class);
+                in.putExtra("algoritmo", 1);
+
+                startActivity(in);
+
                 Toast.makeText(this,"Algoritmo elegido: Peor hueco",Toast.LENGTH_LONG).show();
                 return true;
             default:

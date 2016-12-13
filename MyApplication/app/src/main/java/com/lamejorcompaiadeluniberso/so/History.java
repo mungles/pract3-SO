@@ -47,6 +47,11 @@ public class History {
         historyMap.put(moment, history.size() - 1);
     }
 
+    public static void borraPartida(){
+        history.clear();
+        historyMap.clear();
+    }
+
     public static List<Item> getMoments() {
         return history;
     }

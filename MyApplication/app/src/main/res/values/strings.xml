@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">Gestion de Memoria</string>
+    <string name="app_name">Gestión de Memoria</string>
     <string name="action_upload">Upload file</string>
     <string name="menu_nuevo">file</string>
-    <string name="peor_hueco">Gestionar por peor hueco: </string>
-    <string name="siguiente_hueco">Gestionar por siguiente hueco: </string>
+    <string name="peor_hueco">Gestionar por peor hueco</string>
+    <string name="siguiente_hueco">Gestionar por siguiente hueco</string>
+    <string name="intro">Selecciona un archivo para comenzar</string>
 </resources>

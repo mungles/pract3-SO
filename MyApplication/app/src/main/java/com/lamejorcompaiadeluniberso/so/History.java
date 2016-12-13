@@ -1,5 +1,8 @@
 package com.lamejorcompaiadeluniberso.so;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +40,7 @@ public class History {
 
         for (int i = 0; i < particiones.size(); i++) {
             Particion pa = particiones.get(i);
-            listcopy.add(new Particion(pa.getInicio(), pa.getTamaño(), pa.getEstado(), pa.isLibre(), pa.getTtl()));
+            listcopy.add(new Particion(pa));
         }
 
         history.add(new Item(moment, listcopy));
@@ -48,6 +51,7 @@ public class History {
         return history;
     }
 
+    @Nullable
     public static Item getMoment(int moment) {
         if (historyMap.get(moment) != null) {
             return history.get(historyMap.get(moment));
@@ -56,11 +60,13 @@ public class History {
         }
     }
 
+    @Nullable
     public static List<Particion> getParticionesInMoment(int moment) {
         History.Item i = getMoment(moment);
         if (i != null) { return i.getParticiones(); } else { return null; }
     }
 
+    @NonNull
     public static String getPrintableString() {
         StringBuilder sb = new StringBuilder();
 
@@ -93,7 +99,14 @@ public class History {
         }
 
         public void updateParticiones(List<Particion> particiones) {
-            this.particiones = particiones;
+            List<Particion> listcopy = new ArrayList<>();
+
+            for (int i = 0; i < particiones.size(); i++) {
+                Particion pa = particiones.get(i);
+                listcopy.add(new Particion(pa));
+            }
+
+            this.particiones = listcopy;
         }
 
         public String toString() {

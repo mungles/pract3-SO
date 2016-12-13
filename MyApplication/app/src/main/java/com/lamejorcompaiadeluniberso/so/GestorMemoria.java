@@ -17,7 +17,13 @@ public class GestorMemoria {
 
     public GestorMemoria(List<Proceso> procesos) {
         particiones.add(new Particion(0, MAX_MEM, "Libre", true, 0));
-        this.procesos = procesos;
+
+        List<Proceso> procesos_copy = new ArrayList<>();
+        for (int i = 0; i < procesos.size(); i++) {
+            procesos_copy.add(new Proceso(procesos.get(i)));
+        }
+
+        this.procesos = procesos_copy;
     }
 
     public List<Proceso> getProcesosEnInstante(int instante) {
@@ -47,14 +53,17 @@ public class GestorMemoria {
         Log.w("P3SO", instantes.size() + " instantes.");
 
         for (int i = 0; i < instantes.size(); i++) {
-            List<Proceso> proc = getProcesosEnInstante(instantes.get(i));
-            Log.w("P3SO", proc.size() + " procesos en " + instantes.get(i));
+            int current_moment = instantes.get(i);
+
+            List<Proceso> proc = getProcesosEnInstante(current_moment);
+            Log.w("P3SO", proc.size() + " procesos en " + current_moment);
+
 
             // Controlar ciclo de vida de los procesos que están ya asignados
             for (int j = 0; j < particiones.size(); j++) {
                 Particion pa = particiones.get(j);
                 if (!pa.isLibre()) {
-                    if (pa.getTtl() - instantes.get(i) <= 0) {
+                    if (pa.getTtl() - current_moment <= 0) {
                         Log.w("P3SO", "Proceso " + pa.getEstado() + " muere.");
                         // El proceso ha muerto en este instante
                         int attatch = -1;
@@ -92,6 +101,12 @@ public class GestorMemoria {
                 }
             }
 
+            // Incorporamos los procesos en cola al principio de la lista de procesos
+            for (int j = 0; j < cola.size(); j++) {
+                proc.add(j, cola.get(j));
+                cola.remove(j);
+            }
+
             // Asignar espacios a procesos
             for (int j = 0; j < proc.size(); j++) {
                 Proceso p = proc.get(j);
@@ -107,7 +122,7 @@ public class GestorMemoria {
                         int inicio = pa.getInicio();
                         particiones.get(k).setTamaño(nuevotamaño);
                         particiones.get(k).setInicio(pa.getInicio() + p.getMemoria());
-                        particiones.add(k, new Particion(inicio, p.getMemoria(), p.getNombre(), false, p.getTiempo() + instantes.get(i)));
+                        particiones.add(k, new Particion(inicio, p.getMemoria(), p.getNombre(), false, p.getTiempo() + current_moment));
                         hueco = k;
                         allocated = true;
                         Log.w("P3SO", "Allocated " + p.getNombre() + " in partition " + pa.toString() + "("+k+")");
@@ -117,8 +132,8 @@ public class GestorMemoria {
                 if (!allocated) { cola.add(p); }
             }
 
-            Log.w("P3SO", "Instante " + instantes.get(i) + " acaba con " + cola.size() + " procesos en cola.");
-            History.addMoment(instantes.get(i), particiones);
+            Log.w("P3SO", "Instante " + current_moment + " acaba con " + cola.size() + " procesos en cola.");
+            History.addMoment(current_moment, particiones);
         }
 
         Log.w("P3SO", History.getPrintableString());
@@ -156,6 +171,7 @@ public class GestorMemoria {
                     }
                 }
             }
+
             //seleccionar hueco
             for(int j=0;i<particiones.size();i++){
                 if(particiones.get(j).isLibre()){
@@ -201,7 +217,7 @@ public class GestorMemoria {
             Log.w("P3SO", "Instante " + instantes.get(i) + " acaba con " + cola.size() + " procesos en cola.");
             History.addMoment(instantes.get(i), particiones);
         }
-        Log.w("P3SO", History.getPrintableString());
 
+        Log.w("P3SO", History.getPrintableString());
     }
 }

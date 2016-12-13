@@ -7,10 +7,12 @@ package com.lamejorcompaiadeluniberso.so;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -69,7 +71,6 @@ public class ProcesosAdapter extends BaseAdapter {
             holder.item_title.setVisibility(View.VISIBLE);
         } else {
             holder.item_title.setVisibility(View.GONE);
-            holder.item_content.setPadding(0, 16, 0, 0);
         }
 
         holder.item_memory.setText("\uD83D\uDCBE " + procesos.get(i).getMemoria());

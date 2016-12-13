@@ -5,16 +5,23 @@ package com.lamejorcompaiadeluniberso.so;
  */
 
 public class Proceso {
-    String nombre;
-    int llegada;
-    int memoria;
-    int tiempo;
+    private String nombre;
+    private int llegada;
+    private int memoria;
+    private int tiempo;
 
     public Proceso(String nombre, int llegada, int memoria, int tiempo) {
         this.nombre = nombre;
         this.llegada = llegada;
         this.memoria = memoria;
         this.tiempo = tiempo;
+    }
+
+    public Proceso(Proceso p) {
+        this.nombre = p.getNombre();
+        this.llegada = p.getLlegada();
+        this.memoria = p.getMemoria();
+        this.tiempo = p.getTiempo();
     }
 
     public String getNombre(){

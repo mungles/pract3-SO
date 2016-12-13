@@ -1,8 +1,8 @@
 package com.lamejorcompaiadeluniberso.so;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -27,6 +28,7 @@ import java.util.StringTokenizer;
 import pl.droidsonroids.gif.GifImageView;
 
 import static android.R.attr.button;
+import static android.view.View.GONE;
 
 public class MainActivity extends AppCompatActivity {
     final int ELEGIR_ARCHIVO_REQUEST_CODE = 42;
@@ -85,11 +87,12 @@ public class MainActivity extends AppCompatActivity {
             if (resultData != null) {
                 uri = resultData.getData();
                 String uri_s = uri.toString() + "";
-                getSupportActionBar().setSubtitle(uri_s.split("%3A")[1]);
+                String uri_p[] = uri_s.split("%3A");
+                getSupportActionBar().setSubtitle(uri_p[uri_p.length-1]);
 
                 Archivo a = new Archivo(getApplicationContext());
                 lineas=a.leerArchivo(uri);
-                Toast.makeText(this,"Se han cargado: " + (lineas.size()-1)+" procesos",Toast.LENGTH_LONG).show();
+                Toast.makeText(this,"Se han cargado: " + (lineas.size()-1) +" procesos",Toast.LENGTH_LONG).show();
                 procesos = crearProceso(lineas);
                 String[] datos = lineas.toArray(new String[lineas.size()-1]);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,datos);
@@ -154,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
         linea = s;
 
 
-        for(int i=1;i<linea.size();i++){
+        for(int i=0;i<linea.size();i++){
             String[] parts = linea.get(i).split(" ");
             Proceso p = new Proceso(parts[0],Integer.parseInt(parts[1]),Integer.parseInt(parts[2]),Integer.parseInt(parts[3]));
             procesos.add(p);
@@ -176,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
         startActivityForResult(intent, ELEGIR_ARCHIVO_REQUEST_CODE);
+        findViewById(R.id.introlayout).setVisibility(View.GONE);
     }
 
     private void FantasticRainbowFun() {
@@ -186,6 +190,9 @@ public class MainActivity extends AppCompatActivity {
         gv2.setVisibility(View.VISIBLE);
 
         superloop();
+
+        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.taste);
+        mp.start();
     }
 
     private void superloop() {

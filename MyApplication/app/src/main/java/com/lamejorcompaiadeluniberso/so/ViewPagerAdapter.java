@@ -46,8 +46,10 @@ public class ViewPagerAdapter extends PagerAdapter {
 
         pieChart.setData(data);
         pieChart.setRotationEnabled(false);
+        pieChart.setTouchEnabled(false);
         pieChart.setDescription(new Description());
         pieChart.getLegend().setEnabled(false);
+        pieChart.getDescription().setEnabled(false);
 
         collection.addView(child);
         return child;

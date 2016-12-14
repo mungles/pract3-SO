@@ -72,6 +72,11 @@ public class History {
         }
     }
 
+    public static void reset() {
+        history.clear();
+        historyMap.clear();
+    }
+
     @Nullable
     public static List<Particion> getParticionesInMoment(int moment) {
         History.Item i = getMoment(moment);

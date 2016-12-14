@@ -42,7 +42,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
         PieChart pieChart = (PieChart) child.findViewById(R.id.item_piechart_chart);
         TextView titleTxt = (TextView) child.findViewById(R.id.item_piechart_text);
-        titleTxt.setText("Instante\n" + instantes.get(position));
+        titleTxt.setText("Instante " + instantes.get(position));
 
         pieChart.setData(data);
         pieChart.setRotationEnabled(false);

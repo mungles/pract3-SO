@@ -1,7 +1,11 @@
 package com.lamejorcompaiadeluniberso.so;
 
+import android.content.Context;
 import android.util.Log;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,10 +14,11 @@ import java.util.ListIterator;
 /**
  * Created by axel on 01/12/2016.
  */
-public class GestorMemoria {
+public class GestorMemoria{
     private final int MAX_MEM = 2000;
     private ArrayList<Particion> particiones = new ArrayList<>();
     private List<Proceso> procesos = new ArrayList<>();
+
 
     public GestorMemoria(List<Proceso> procesos) {
         particiones.add(new Particion(0, MAX_MEM, "Libre", true, 0));
@@ -38,7 +43,8 @@ public class GestorMemoria {
         return proc;
     }
 
-    public void procesarComoSiguienteHueco() {
+    public String procesarComoSiguienteHueco() {
+
         int hueco = 0;
 
         List<Integer> instantes = new ArrayList<>();
@@ -181,11 +187,12 @@ public class GestorMemoria {
         }
 
         History.addMoment(instantes.get(instantes.size()-1), particiones);
-
         Log.w("P3SO", History.getPrintableString());
+        String s = History.getPrintableString();
+        return s;
     }
 
-    public void procesarComoPeorHueco() {
+    public String procesarComoPeorHueco() {
 
         History.borraPartida();
         List<Integer> instantes = new ArrayList<>();
@@ -282,5 +289,7 @@ public class GestorMemoria {
             History.addMoment(instantes.get(i), particiones);
         }
         Log.w("P3SO", History.getPrintableString());
+        String s = History.getPrintableString();
+        return s;
     }
 }

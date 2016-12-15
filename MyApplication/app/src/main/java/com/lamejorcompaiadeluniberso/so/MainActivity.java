@@ -1,6 +1,7 @@
 package com.lamejorcompaiadeluniberso.so;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -24,7 +25,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -133,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onContextItemSelected(MenuItem item){
         Window window = getWindow();
-
+        String cadena;
         switch (item.getItemId()){
             case R.id.siguiente_hueco:
                 item.setChecked(true);
@@ -142,8 +146,8 @@ public class MainActivity extends AppCompatActivity {
                 i.putExtra("algoritmo", 0);
 
                 GestorMemoria gm = new GestorMemoria(procesos);
-                gm.procesarComoSiguienteHueco();
-
+                cadena=gm.procesarComoSiguienteHueco();
+                escribirFichero(cadena);
                 startActivity(i);
                 overridePendingTransition (R.anim.activity_enter, R.anim.activity_out);
 
@@ -152,10 +156,11 @@ public class MainActivity extends AppCompatActivity {
 
                 return true;
             case R.id.peor_hueco:
-                GestorMemoria GM = new GestorMemoria(procesos);
-                GM.procesarComoPeorHueco();
                 item.setChecked(true);
 
+                GestorMemoria GM = new GestorMemoria(procesos);
+                cadena=GM.procesarComoPeorHueco();
+                escribirFichero(cadena);
                 Intent in = new Intent(MainActivity.this, GraphicsActivity.class);
                 in.putExtra("algoritmo", 1);
 
@@ -243,5 +248,21 @@ public class MainActivity extends AppCompatActivity {
                 superloop();
             }
         }, 100);
+    }
+
+    public void escribirFichero(String cadena){
+        String nombre = "SalidaGestor.txt";
+        String texto = cadena;
+        FileOutputStream fos;
+        try{
+            fos = openFileOutput(nombre,Context.MODE_PRIVATE);
+            OutputStreamWriter fout = new OutputStreamWriter(fos);
+            fout.write(cadena);
+            Toast.makeText(this,"Archivo 'SalidaGestor.txt' creado.",Toast.LENGTH_LONG).show();
+            fout.close();
+        }
+        catch (Exception ex){
+            Toast.makeText(this,"Error al crear el archivo de salida.",Toast.LENGTH_LONG).show();
+        }
     }
 }

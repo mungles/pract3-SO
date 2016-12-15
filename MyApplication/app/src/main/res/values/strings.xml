@@ -5,4 +5,5 @@
     <string name="peor_hueco">Gestionar por peor hueco</string>
     <string name="siguiente_hueco">Gestionar por siguiente hueco</string>
     <string name="intro">Selecciona un archivo para comenzar</string>
+    <string name="error">Ha habido un error al leer el archivo.</string>
 </resources>

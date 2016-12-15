@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         List<String> lineas = new ArrayList<String>();
         int memoria=0;
         if (requestCode == ELEGIR_ARCHIVO_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            Uri uri = null;
+            Uri uri;
             if (resultData != null) {
                 uri = resultData.getData();
                 String uri_s = uri.toString() + "";
@@ -147,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
 
                 GestorMemoria gm = new GestorMemoria(procesos);
                 cadena=gm.procesarComoSiguienteHueco();
-                escribirFichero(cadena);
                 startActivity(i);
                 overridePendingTransition (R.anim.activity_enter, R.anim.activity_out);
 
@@ -160,7 +159,6 @@ public class MainActivity extends AppCompatActivity {
 
                 GestorMemoria GM = new GestorMemoria(procesos);
                 cadena=GM.procesarComoPeorHueco();
-                escribirFichero(cadena);
                 Intent in = new Intent(MainActivity.this, GraphicsActivity.class);
                 in.putExtra("algoritmo", 1);
 
@@ -248,21 +246,5 @@ public class MainActivity extends AppCompatActivity {
                 superloop();
             }
         }, 100);
-    }
-
-    public void escribirFichero(String cadena){
-        String nombre = "SalidaGestor.txt";
-        String texto = cadena;
-        FileOutputStream fos;
-        try{
-            fos = openFileOutput(nombre,Context.MODE_PRIVATE);
-            OutputStreamWriter fout = new OutputStreamWriter(fos);
-            fout.write(cadena);
-            Toast.makeText(this,"Archivo 'SalidaGestor.txt' creado.",Toast.LENGTH_LONG).show();
-            fout.close();
-        }
-        catch (Exception ex){
-            Toast.makeText(this,"Error al crear el archivo de salida.",Toast.LENGTH_LONG).show();
-        }
     }
 }

@@ -3,13 +3,20 @@ package com.lamejorcompaiadeluniberso.so;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 /**
@@ -64,6 +71,25 @@ public class Archivo {
             Log.e("Ficheros", "Error al leer fichero desde tarjeta SD");
             return null;
         }
+    }
+
+    public boolean escribirFichero(Uri uri, String cadena){
+        try {
+            ParcelFileDescriptor pfd = ctx.getContentResolver().openFileDescriptor(uri, "w");
+
+            FileOutputStream os = new FileOutputStream(pfd.getFileDescriptor());
+            os.write(cadena.getBytes());
+            os.close();
+            Log.w("P3SO", "File saved in " + uri);
+            return true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
 }

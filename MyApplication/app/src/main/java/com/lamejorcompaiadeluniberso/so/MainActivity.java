@@ -2,6 +2,7 @@ package com.lamejorcompaiadeluniberso.so;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,10 +12,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.InflateException;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -128,27 +132,61 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean onContextItemSelected(MenuItem item){
+        Window window = getWindow();
+
         switch (item.getItemId()){
             case R.id.siguiente_hueco:
+                item.setChecked(true);
+
+                Intent i = new Intent(MainActivity.this, GraphicsActivity.class);
+                i.putExtra("algoritmo", 0);
+
                 GestorMemoria gm = new GestorMemoria(procesos);
                 gm.procesarComoSiguienteHueco();
-                item.setChecked(true);
-                Toast.makeText(this,"Algoritmo elegido: Siguiente hueco",Toast.LENGTH_LONG).show();
+
+                startActivity(i);
+                overridePendingTransition (R.anim.activity_enter, R.anim.activity_out);
+
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.setStatusBarColor(Color.BLACK);
+
                 return true;
             case R.id.peor_hueco:
                 GestorMemoria GM = new GestorMemoria(procesos);
                 GM.procesarComoPeorHueco();
                 item.setChecked(true);
-                Toast.makeText(this,"Algoritmo elegido: Peor hueco",Toast.LENGTH_LONG).show();
+
+                Intent in = new Intent(MainActivity.this, GraphicsActivity.class);
+                in.putExtra("algoritmo", 1);
+
+                startActivity(in);
+                overridePendingTransition (R.anim.activity_enter, R.anim.activity_out);
+
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.setStatusBarColor(Color.BLACK);
+
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
     }
 
-    public void lanzarMenu(View v){
-        registerForContextMenu(v);
-        openContextMenu(v);
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+    }
+
+    public void lanzarMenu(final View v){
+        try {
+            registerForContextMenu(v);
+            openContextMenu(v);
+        } catch (InflateException ie) {
+            ie.printStackTrace();
+        }
     }
 
     private List<Proceso> crearProceso(List<String> s){

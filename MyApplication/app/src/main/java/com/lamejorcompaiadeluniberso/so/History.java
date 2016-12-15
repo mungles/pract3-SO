@@ -56,6 +56,18 @@ public class History {
         return history;
     }
 
+    public static List<Integer> getInstantes() {
+        List<Integer> instantes = new ArrayList<>();
+
+        for (int i = 0; i < history.size(); i++) {
+            if (!instantes.contains(history.get(i).getInstante())) {
+                instantes.add(history.get(i).getInstante());
+            }
+        }
+
+        return instantes;
+    }
+
     @Nullable
     public static Item getMoment(int moment) {
         if (historyMap.get(moment) != null) {
@@ -63,6 +75,11 @@ public class History {
         } else {
             return null;
         }
+    }
+
+    public static void reset() {
+        history.clear();
+        historyMap.clear();
     }
 
     @Nullable

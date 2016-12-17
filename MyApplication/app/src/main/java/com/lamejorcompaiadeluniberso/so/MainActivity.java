@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         String cadena;
         switch (item.getItemId()){
             case R.id.siguiente_hueco:
-                item.setChecked(true);
+
 
                 Intent i = new Intent(MainActivity.this, GraphicsActivity.class);
                 i.putExtra("algoritmo", 0);
@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
                 return true;
             case R.id.peor_hueco:
-                item.setChecked(true);
+
 
                 GestorMemoria GM = new GestorMemoria(procesos);
                 cadena=GM.procesarComoPeorHueco();
